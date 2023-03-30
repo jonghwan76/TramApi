@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.hmit.tram.dao.TramMapper">
+    <!-- 대차 상태 조회 -->
+    <select id="getBogieStatusList" parameterType="BogieVO" resultType="HashMap" >
+        <![CDATA[/* 대차 상태 조회 */]]>
+        select a.bogie_no as bogieNo,
+               a.status
+        from bogie_status a
+        where 1=1
+        <if test="bogieNo != null">
+            and a.bogie_no in
+            <foreach collection="bogieNo" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        order by a.bogie_no
+    </select>
+
+    <!-- 이상점수 차트용 조회 -->
+    <select id="getAnomalyList" parameterType="AnomalyVO" resultType="HashMap" >
+        <![CDATA[/* 이상점수 차트용 조회 */]]>
+        select
+               DATE_FORMAT(a.time, '%Y-%m-%d %H:%i:%s') as time,
+               a.score,
+               a.scroe_limit as scoreLimit,
+               a.score_max as scoreMax,
+               a.score_min as scoreMin
+        from anomaly_score a
+        where 1=1
+        <if test="bogieNo != null">
+            and a.bogie_no in
+            <foreach collection="bogieNo" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        order by a.time, a.bogie_no
+    </select>
+
+    <!-- 온도 차트용 조회 -->
+    <select id="getTempList" parameterType="TempVO" resultType="HashMap" >
+        <![CDATA[/* 온도 차트용 조회 */]]>
+        select
+               a.bogie_no,
+               DATE_FORMAT(a.time, '%Y-%m-%d %H:%i:%s') as time,
+               a.temp,
+               a.temp_red as tempRed,
+               a.temp_yellow as tempYellow,
+               a.temp_max as tempMax,
+               a.temp_min as tempMin
+        from temp_data a
+        where 1=1
+        <if test="bogieNo != null">
+            and a.bogie_no in
+            <foreach collection="bogieNo" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        order by a.time, a.bogie_no
+    </select>
+
+    <!-- RMS 저주파 차트용 조회 -->
+    <select id="getRmsLowList" parameterType="RmsLowVO" resultType="HashMap" >
+        <![CDATA[/* RMS 저주파 차트용 조회 */]]>
+        select
+            a.bogie_no,
+            a.time,
+            a.rms_low as rmsLow,
+            a.rms_low_red as rmsLowRed,
+            a.rms_low_yellow as rmsLowYellow,
+            a.rms_low_max as rmsLowMax,
+            a.rms_low_min as rmsLowMin
+        from rams_low a
+        where 1=1
+        <if test="bogieNo != null">
+            and a.bogie_no in
+            <foreach collection="bogieNo" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        order by a.time, a.bogie_no
+    </select>
+
+    <!-- RMS 고주파 차트용 조회 -->
+    <select id="getRmsHighList" parameterType="RmsHighVO" resultType="HashMap" >
+        <![CDATA[/* RMS 고주파 차트용 조회 */]]>
+        select
+            a.bogie_no,
+            a.time,
+            a.rms_high as rmsHigh,
+            a.rms_high_red as rmsHighRed,
+            a.rms_high_yellow as rmsHighYellow,
+            a.rms_high_max as rmsHighMax,
+            a.rms_high_min as rmsHighMin
+        from rams_high a
+        where 1=1
+        <if test="bogieNo != null">
+            and a.bogie_no in
+            <foreach collection="bogieNo" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        order by a.time, a.bogie_no
+    </select>
+</mapper>
