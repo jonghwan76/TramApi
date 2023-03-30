@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,8 +27,19 @@ public class TramApiController {
      */
     @RequestMapping("/getBogieStatus")
     @ResponseBody
-    public HashMap getBogieStatus(BogieVO bogieVO) {
+    public HashMap getBogieStatus(String bogieNo) {
         HashMap hashMap = new HashMap();
+
+        BogieVO bogieVO = new BogieVO();
+        List mList = new ArrayList();
+
+        if(bogieNo.equals("all")) {
+            bogieVO.setBogieNo(null);
+        } else {
+            String[] arrBogieNo = bogieNo.split(",");
+            ArrayList mNewList = new ArrayList(Arrays.asList(arrBogieNo));
+            bogieVO.setBogieNo(mNewList);
+        }
 
         String resultCode = "200";
         String resultMsg = "성공";
