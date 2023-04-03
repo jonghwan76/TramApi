@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.hmit.tram</groupId>
-	<artifactId>web3</artifactId>
+	<artifactId>tram</artifactId>
 	<version>api</version>
 	<name>TRAM</name>
 	<description>Tram API project for Spring Boot</description>
